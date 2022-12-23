@@ -7,11 +7,22 @@ information about the project
 
 ## Runner
 
-Provides a :Hurl command that runs hurl against the current file. Opens the
-results in a floating window.
+Provides a :Hurl and :HurlNoColor command that run hurl against the current
+file. Opens the results in a floating window.
+
+The :Hurl command creates an nvim terminal to show colorized output from hurl.
+Unfortunately when copying from an nvim terminal any linewraps result in a new
+line when pasting. The HurlNoColor uses a plain scratch buffer and runs hurl
+without color to allow for copying without new lines on line wraps.
 
 ```vim
 :Hurl
+:HurlNoColor
+```
+
+```lua
+require'hurl'.hurl()
+require'hurl'.hurl_no_color()
 ```
 
 ## Setup
