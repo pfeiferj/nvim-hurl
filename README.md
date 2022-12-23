@@ -1,9 +1,18 @@
 # nvim-hurl
 
-Syntax highlighting for [Hurl](https://hurl.dev) files.
+Syntax highlighting and runner for [Hurl](https://hurl.dev) files.
 
 NOTE: This is an unofficial plugin, visit <https://hurl.dev> for more
 information about the project
+
+## Runner
+
+Provides a :Hurl command that runs hurl against the current file. Opens the
+results in a floating window.
+
+```vim
+:Hurl
+```
 
 ## Setup
 
@@ -12,6 +21,8 @@ information about the project
 This project utilizes [nvim-treesitter](https://github.com/nvim-treesitter/nvim-treesitter)
 to manage the tree-sitter parser for hurl. You must have nvim-treesitter
 installed to use this plugin.
+
+To use the :Hurl command you must have hurl installed on your path.
 
 ### Instructions
 
