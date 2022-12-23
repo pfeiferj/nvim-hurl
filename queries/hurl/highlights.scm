@@ -7,6 +7,7 @@
 "[Captures]" @property
 "[Asserts]" @property
 "[Options]" @property
+"[BasicAuth]" @property
 
 (comment) @comment @spell
 
@@ -105,3 +106,7 @@
 "}" @punctuation.bracket
 "{{" @punctuation.special
 "}}" @punctuation.special
+
+"base64," @string.special
+"file," @string.special
+"hex," @string.special
