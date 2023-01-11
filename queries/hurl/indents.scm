@@ -18,3 +18,6 @@
   "}"
   "]"
 ] @branch
+
+(xml_tag (xml_open_tag)) @indent
+(xml_tag (xml_close_tag) @branch)
