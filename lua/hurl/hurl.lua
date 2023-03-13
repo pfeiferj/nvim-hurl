@@ -1,8 +1,8 @@
 local M = {}
-local gheight = vim.api.nvim_list_uis()[1].height
-local gwidth = vim.api.nvim_list_uis()[1].width
 
 function M.hurl()
+  local gheight = vim.api.nvim_list_uis()[1].height
+  local gwidth = vim.api.nvim_list_uis()[1].width
   local file = vim.fn.expand("%")
   local buf = vim.api.nvim_create_buf(false, true)
   local width = gwidth - 10
@@ -25,6 +25,8 @@ function M.hurl()
 end
 
 function M.hurl_no_color()
+  local gheight = vim.api.nvim_list_uis()[1].height
+  local gwidth = vim.api.nvim_list_uis()[1].width
   local h = io.popen("hurl " .. vim.fn.expand("%") .. " 2>&1")
   if h then
     h:flush()
