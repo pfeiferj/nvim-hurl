@@ -5,9 +5,10 @@ Syntax highlighting and runner for [Hurl](https://hurl.dev) files.
 NOTE: This is an unofficial plugin, visit <https://hurl.dev> for more
 information about the project
 
+
 ## Runner
 
-Provides a :Hurl and :HurlNoColor command that run hurl against the current
+Provides a :Hurl command that runs hurl against the current
 file. Opens the results in a floating window.
 
 The :Hurl command creates an nvim terminal to show colorized output from hurl.
@@ -21,8 +22,8 @@ without color to allow for copying without new lines on line wraps.
 ```
 
 ```lua
-require'hurl'.hurl()
-require'hurl'.hurl_no_color()
+require'hurl'.hurl()                  -- Equivalent to :Hurl
+require'hurl'.hurl({ color = false }) -- Equivalent to :HurlNoColor
 ```
 
 ## Setup
@@ -40,8 +41,19 @@ To use the :Hurl command you must have hurl installed on your path.
 Once you install the plugin it can be setup using the setup function:
 
 ``` lua
-require("hurl").setup()
+require("hurl").setup({
+  color = true -- Default: true
+})
 ```
+
+Default settings table:
+```lua
+{
+  color = true
+}
+```
+
+If you would like to modify any of these settings change the corresponding key in the hurl setup function.
 
 The setup function injects the hurl tree-sitter configuration into
 nvim-treesitter but does not install the parser. To install the parser you must
