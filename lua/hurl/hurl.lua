@@ -8,7 +8,7 @@ function M.hurl(config)
   local buf = vim.api.nvim_create_buf(false, true)
   local width = gwidth - 10
   local height = gheight - 4
-  vim.api.nvim_open_win(buf, true, {
+  local win_id = vim.api.nvim_open_win(buf, true, {
     relative = "editor",
     width = width,
     height = height,
@@ -18,6 +18,19 @@ function M.hurl(config)
     border = "rounded",
   })
   local term = vim.api.nvim_open_term(buf,{})
+
+  -- This ensures the window created is closed instead of covering the editor when a split is created
+  vim.api.nvim_create_autocmd("WinLeave", {
+    pattern = "*",
+    desc = "Win Leave Autocmd to close Hurl Output window on leave",
+    callback = function(args)
+      if args.buf == buf then
+        vim.api.nvim_win_close(win_id, true)
+      end
+      -- Clean this autocmd up
+      vim.api.nvim_del_autocmd(args.id)
+    end,
+  })
 
   -- Build arguments list
   local hurl_args_t = {}
