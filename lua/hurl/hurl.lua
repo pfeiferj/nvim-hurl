@@ -5,7 +5,7 @@ function M.hurl(config)
   local gheight = vim.api.nvim_list_uis()[1].height
   local gwidth = vim.api.nvim_list_uis()[1].width
   local file = vim.fn.expand("%")
-  local buf = vim.api.nvim_create_buf(false, true)
+  local buf = vim.api.nvim_create_buf(true, true)
   local width = gwidth - 10
   local height = gheight - 4
   vim.api.nvim_open_win(buf, true, {
