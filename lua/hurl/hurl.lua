@@ -27,27 +27,39 @@ function M.hurl(config)
         vim.api.nvim_win_close(win_id, true)
       end
       -- Clean this autocmd up
-      vim.api.nvim_del_autocmd(args.id)
+      return true
     end,
   })
 
   -- Build arguments list
-  local hurl_args_t = { "hurl", file, "--include" }
-  if config.color then
-    table.insert(hurl_args_t, "--color")
-  else
-    table.insert(hurl_args_t, "--no-color")
+  local hurl_args_t = vim.tbl_deep_extend("force", {}, config.hurl_flags)
+  -- Always ensure the `--include` flag is passed so we can get http headers
+  if not vim.list_contains(hurl_args_t, "--include") then
+    table.insert(hurl_args_t, "--include")
+  end
+  -- If we're missing color flags then set it according to `config.color`
+  if not vim.list_contains(hurl_args_t, { "--color" }) or not vim.list_contains(hurl_args_t, { "--no-color" }) then
+    if config.color then
+      table.insert(hurl_args_t, "--color")
+    else
+      table.insert(hurl_args_t, "--no-color")
+    end
   end
 
+  -- Append the hurl file to target
+  table.insert(hurl_args_t, file)
+  -- Insert the hurl command as the first element of the table. This avoids bugs where the hurl command is in the
+  -- wrong position within the table causing `vim.system` to fail
+  table.insert(hurl_args_t, 1, "hurl")
   vim.system(
     hurl_args_t,
     { text = true },
     ---@param cmd SystemCompleted
     function(cmd)
       vim.schedule(function()
-          local term = vim.api.nvim_open_term(buf, {})
-          vim.api.nvim_chan_send(term, table.concat(vim.split(cmd.stdout, "\n"), "\r\n"))
-          vim.api.nvim_chan_send(term, table.concat(vim.split(cmd.stderr, "\n"), "\r\n"))
+        local term = vim.api.nvim_open_term(buf, {})
+        vim.api.nvim_chan_send(term, table.concat(vim.split(cmd.stdout, "\n"), "\r\n"))
+        vim.api.nvim_chan_send(term, table.concat(vim.split(cmd.stderr, "\n"), "\r\n"))
       end)
     end
   )

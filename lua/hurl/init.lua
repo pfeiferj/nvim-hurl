@@ -22,9 +22,12 @@ function M.setup(user_config)
     },
   })
   M.register_treesitter()
-  vim.api.nvim_create_user_command("Hurl", function()
-    h.hurl(config.config)
-  end, {})
+  vim.api.nvim_create_user_command("Hurl", function(cmd)
+    ---@type HurlConfig
+    local conf_copy = vim.tbl_deep_extend("force", {}, config.config)
+    conf_copy.hurl_flags = cmd.fargs
+    h.hurl(conf_copy)
+  end, { nargs = "*" })
   vim.api.nvim_create_user_command("HurlNoColor", function()
     h.hurl(vim.tbl_deep_extend("force", config.config, { color = false }))
   end, {})
