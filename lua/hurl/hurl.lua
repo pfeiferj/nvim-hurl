@@ -17,7 +17,6 @@ function M.hurl(config)
     style = "minimal",
     border = "rounded",
   })
-  local term = vim.api.nvim_open_term(buf,{})
 
   -- This ensures the window created is closed instead of covering the editor when a split is created
   vim.api.nvim_create_autocmd("WinLeave", {
@@ -33,19 +32,25 @@ function M.hurl(config)
   })
 
   -- Build arguments list
-  local hurl_args_t = {}
+  local hurl_args_t = { "hurl", file, "--include" }
   if config.color then
     table.insert(hurl_args_t, "--color")
   else
     table.insert(hurl_args_t, "--no-color")
   end
-  local hurl_args = table.concat(hurl_args_t, " ")
 
-  vim.fn.jobstart("hurl " .. file .. " " .. hurl_args, {
-    width = width,
-    on_stdout = function(chan, data) vim.api.nvim_chan_send(term,table.concat(data, "\r\n")) end,
-    on_stderr = function(chan, data) vim.api.nvim_chan_send(term,table.concat(data, "\r\n")) end
-  })
+  vim.system(
+    hurl_args_t,
+    { text = true },
+    ---@param cmd SystemCompleted
+    function(cmd)
+      vim.schedule(function()
+          local term = vim.api.nvim_open_term(buf, {})
+          vim.api.nvim_chan_send(term, table.concat(vim.split(cmd.stdout, "\n"), "\r\n"))
+          vim.api.nvim_chan_send(term, table.concat(vim.split(cmd.stderr, "\n"), "\r\n"))
+      end)
+    end
+  )
 end
 
 return M
