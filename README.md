@@ -24,6 +24,7 @@ without color to allow for copying without new lines on line wraps.
 ```lua
 require'hurl'.hurl()                  -- Equivalent to :Hurl
 require'hurl'.hurl({ color = false }) -- Equivalent to :HurlNoColor
+require'hurl'.hurl({ hurl_flags = { "--location" }}) -- Equivalent to :Hurl --location
 ```
 
 ## Setup
@@ -42,14 +43,16 @@ Once you install the plugin it can be setup using the setup function:
 
 ``` lua
 require("hurl").setup({
-  color = true -- Default: true
+  color = true    -- Default: true
+  hurl_flags = {} -- Default: {}
 })
 ```
 
 Default settings table:
 ```lua
 {
-  color = true
+  color = true,
+  hurl_flags = {}
 }
 ```
 
