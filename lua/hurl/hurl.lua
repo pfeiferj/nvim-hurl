@@ -47,10 +47,6 @@ function M.hurl(config)
 
   -- Build arguments list
   local hurl_args_t = vim.tbl_deep_extend("force", {}, config.hurl_flags)
-  -- Always ensure the `--include` flag is passed so we can get http headers
-  if not list_contains(hurl_args_t, "--include") then
-    table.insert(hurl_args_t, "--include")
-  end
   -- If we're missing color flags then set it according to `config.color`
   if not list_contains(hurl_args_t, { "--color" }) or not list_contains(hurl_args_t, { "--no-color" }) then
     if config.color then
