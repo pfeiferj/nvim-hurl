@@ -2,8 +2,10 @@ local M = {}
 
 ---@class HurlConfig
 ---@field color boolean
+---@field hurl_flags string[]
 M.config = {
   color = true,
+  hurl_flags = {},
 }
 
 ---Combines the config with the given user configuration

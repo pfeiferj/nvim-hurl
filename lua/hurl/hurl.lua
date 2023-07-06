@@ -1,5 +1,18 @@
 local M = {}
 
+---Checks if a value exists in a given table
+---@param list table
+---@param value any
+---@return boolean
+local function list_contains(list, value)
+  for _, lv in ipairs(list) do
+    if lv == value then
+      return true
+    end
+  end
+
+  return false
+end
 ---@param config HurlConfig
 function M.hurl(config)
   local gheight = vim.api.nvim_list_uis()[1].height
@@ -28,16 +41,19 @@ function M.hurl(config)
         vim.api.nvim_win_close(win_id, true)
       end
       -- Clean this autocmd up
-      vim.api.nvim_del_autocmd(args.id)
+      return true
     end,
   })
 
   -- Build arguments list
-  local hurl_args_t = {}
-  if config.color then
-    table.insert(hurl_args_t, "--color")
-  else
-    table.insert(hurl_args_t, "--no-color")
+  local hurl_args_t = vim.tbl_deep_extend("force", {}, config.hurl_flags)
+  -- If we're missing color flags then set it according to `config.color`
+  if not list_contains(hurl_args_t, { "--color" }) or not list_contains(hurl_args_t, { "--no-color" }) then
+    if config.color then
+      table.insert(hurl_args_t, "--color")
+    else
+      table.insert(hurl_args_t, "--no-color")
+    end
   end
   local hurl_args = table.concat(hurl_args_t, " ")
 
