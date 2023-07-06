@@ -7,7 +7,7 @@ local M = {}
 local function list_contains(list, value)
   for _, lv in ipairs(list) do
     if lv == value then
-      return ture
+      return true
     end
   end
 
