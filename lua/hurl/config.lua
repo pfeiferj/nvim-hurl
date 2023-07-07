@@ -3,9 +3,23 @@ local M = {}
 ---@class HurlConfig
 ---@field color boolean
 ---@field hurl_flags string[]
+---@field win_type "popup" | "split" | "fallback"
 M.config = {
   color = true,
   hurl_flags = {},
+  win_type = "popup",
+  win_options = {
+    enter = true,
+    focusable = true,
+    border = {
+      style = "rounded",
+    },
+    position = "50%",
+    size = {
+      width = "95%",
+      height = "95%",
+    },
+  },
 }
 
 ---Combines the config with the given user configuration
